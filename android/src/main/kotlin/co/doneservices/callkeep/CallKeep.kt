@@ -460,7 +460,7 @@ class CallKeep(private val channel: MethodChannel, private var applicationContex
         builder.addAction(0, declineText, PendingIntent.getActivity(applicationContext, 1, declineIntent, PendingIntent.FLAG_CANCEL_CURRENT))
         builder.addAction(0, answerText, PendingIntent.getActivity(applicationContext, 2, answerIntent, PendingIntent.FLAG_CANCEL_CURRENT))
 
-//        notificationManager.notify(NOTIFICATION_ID, builder.build())
+        notificationManager.notify(NOTIFICATION_ID, builder.build())
     }
 
     private fun dismissCustomIncomingCall() {
