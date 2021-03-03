@@ -19,6 +19,7 @@ import android.view.WindowManager
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -401,10 +402,12 @@ class CallKeep(private val channel: MethodChannel, private var applicationContex
 
     private fun displayCustomIncomingCall(packageName: String, className: String, icon: String, extra: HashMap<String, String>, contentTitle: String, answerText: String, declineText: String, ringtoneUri: String?) {
         val notificationManager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val powerManager = applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
-        val wakeLock: PowerManager.WakeLock = powerManager.newWakeLock(
-                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or
-                        PowerManager.ACQUIRE_CAUSES_WAKEUP, "$packageName:Call")
+
+
+
+        val wakeLock = (applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager).run {
+            newWakeLock(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or PowerManager.ACQUIRE_CAUSES_WAKEUP, "$packageName:Call")
+        }
 
         wakeLock.acquire(60 * 1000L /*1 minute*/)
 

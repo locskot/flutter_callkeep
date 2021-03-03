@@ -25,7 +25,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ce210cca-7642-42df-b6b8-f9f4b1fedfd4" name="Default Changelist" comment="add wakelock" />
+    <list default="true" id="ce210cca-7642-42df-b6b8-f9f4b1fedfd4" name="Default Changelist" comment="add wakelock">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/kotlin/co/doneservices/callkeep/CallKeep.kt" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/kotlin/co/doneservices/callkeep/CallKeep.kt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -69,7 +72,14 @@
       <option name="project" value="LOCAL" />
       <updated>1614776932114</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="add wakelock">
+      <created>1614777427797</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1614777427797</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -82,19 +92,21 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add wakelock" />
-    <option name="LAST_COMMIT_MESSAGE" value="add wakelock" />
+    <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
   <component name="WindowStateProjectService">
     <state x="461" y="188" key="SettingsEditor" timestamp="1614775791295">
       <screen x="0" y="25" width="1920" height="1055" />
     </state>
     <state x="461" y="188" key="SettingsEditor/250.1105.1440.807/0.25.1920.1055@0.25.1920.1055" timestamp="1614775791295" />
-    <state x="560" y="285" key="Vcs.Push.Dialog.v2" timestamp="1614776937404">
-      <screen x="0" y="25" width="1920" height="1055" />
+    <state x="0" y="28" width="1920" height="1055" key="Vcs.Push.Dialog.v2" timestamp="1614777452647">
+      <screen x="0" y="0" width="1920" height="1080" />
     </state>
+    <state x="0" y="28" width="1920" height="1055" key="Vcs.Push.Dialog.v2/250.1080.1440.900/0.0.1920.1080@0.0.1920.1080" timestamp="1614777452647" />
     <state x="560" y="285" key="Vcs.Push.Dialog.v2/250.1105.1440.807/0.25.1920.1055@0.25.1920.1055" timestamp="1614776937404" />
   </component>
 </project>
