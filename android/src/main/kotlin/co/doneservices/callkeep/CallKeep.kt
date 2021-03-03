@@ -401,7 +401,6 @@ class CallKeep(private val channel: MethodChannel, private var applicationContex
 
     private fun displayCustomIncomingCall(packageName: String, className: String, icon: String, extra: HashMap<String, String>, contentTitle: String, answerText: String, declineText: String, ringtoneUri: String?) {
         val notificationManager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
         val powerManager = applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
         val wakeLock: PowerManager.WakeLock = powerManager.newWakeLock(
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or
