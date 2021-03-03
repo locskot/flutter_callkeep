@@ -11,9 +11,11 @@ import android.graphics.drawable.Icon
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.PowerManager
 import android.telecom.*
 import android.telephony.TelephonyManager
 import android.util.Log
+import android.view.WindowManager
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
@@ -62,6 +64,7 @@ class CallKeep(private val channel: MethodChannel, private var applicationContex
     private fun hasPhoneAccount(): Boolean {
         return isConnectionServiceAvailable() && telecomManager!!.getPhoneAccount(handle).isEnabled
     }
+
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         when (call.method) {
             "setup" -> {
@@ -399,29 +402,35 @@ class CallKeep(private val channel: MethodChannel, private var applicationContex
     private fun displayCustomIncomingCall(packageName: String, className: String, icon: String, extra: HashMap<String, String>, contentTitle: String, answerText: String, declineText: String, ringtoneUri: String?) {
         val notificationManager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        var launchIntent = Intent()
+        val powerManager = applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
+        val wakeLock: PowerManager.WakeLock = powerManager.newWakeLock(
+                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or
+                        PowerManager.ACQUIRE_CAUSES_WAKEUP, "$packageName:Call")
+
+        wakeLock.acquire(60 * 1000L /*1 minute*/)
+
+        val launchIntent = Intent()
         launchIntent.setClassName(packageName, "$packageName.$className")
-        launchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        launchIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
         launchIntent.putExtra("co.doneservices.callkeep.NOTIFICATION_ID", NOTIFICATION_ID)
 
         for ((key, value) in extra) {
             launchIntent.putExtra(key, value)
         }
 
-        var answerIntent = Intent()
+        val answerIntent = Intent()
         answerIntent.putExtra("co.doneservices.callkeep.ACTION", "answer")
         answerIntent.setClassName(packageName, "$packageName.$className")
         for ((key, value) in extra) {
             answerIntent.putExtra(key, value)
         }
 
-        var declineIntent = Intent()
+        val declineIntent = Intent()
         declineIntent.putExtra("co.doneservices.callkeep.ACTION", "decline")
         declineIntent.setClassName(packageName, "$packageName.$className")
         for ((key, value) in extra) {
             declineIntent.putExtra(key, value)
         }
-        
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel("incoming_calls", "Incoming Calls", NotificationManager.IMPORTANCE_HIGH)
@@ -434,9 +443,11 @@ class CallKeep(private val channel: MethodChannel, private var applicationContex
         builder.setSmallIcon(applicationContext.resources.getIdentifier(icon, "drawable", applicationContext.packageName))
         builder.setFullScreenIntent(pendingIntent, true)
         builder.setOngoing(true)
+        builder.setContentTitle("Incoming call")
+        builder.setContentText("Incoming call")
         builder.setCategory(NotificationCompat.CATEGORY_CALL)
         builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-        builder.setPriority(NotificationCompat.PRIORITY_MAX)
+        builder.priority = NotificationCompat.PRIORITY_MAX
         builder.setAutoCancel(true)
 
         if (ringtoneUri != null) {
@@ -447,7 +458,7 @@ class CallKeep(private val channel: MethodChannel, private var applicationContex
         builder.addAction(0, declineText, PendingIntent.getActivity(applicationContext, 1, declineIntent, PendingIntent.FLAG_CANCEL_CURRENT))
         builder.addAction(0, answerText, PendingIntent.getActivity(applicationContext, 2, answerIntent, PendingIntent.FLAG_CANCEL_CURRENT))
 
-        notificationManager.notify(NOTIFICATION_ID, builder.build())
+//        notificationManager.notify(NOTIFICATION_ID, builder.build())
     }
 
     private fun dismissCustomIncomingCall() {
